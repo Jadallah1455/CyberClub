@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CourseController;
+use App\Models\CourseCategory;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,14 +17,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome');
+Route::group(['prefix' => LaravelLocalization::setLocale()], function()
+{
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+    Route::resource('courses',CourseController::class);
+    // ->middleware('auth','Check')
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/',[AdminController::class ,'index'])->name('index');
+        // Route::resource('categories',CategoryController::class);
+        // Route::resource('products',ProductController::class);
+    });
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+    Route::view('/', 'welcome');
+    // Route::view('/', 'courses.index');
 
-require __DIR__.'/auth.php';
+
+    Route::view('dashboard', 'dashboard')
+        ->middleware(['auth', 'verified'])
+        ->name('dashboard');
+
+    Route::view('profile', 'profile')
+        ->middleware(['auth'])
+        ->name('profile');
+
+    require __DIR__.'/auth.php';
+
+});

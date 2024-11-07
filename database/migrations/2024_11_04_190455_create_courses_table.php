@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description_en');
             $table->text('description_ar');
             // $table->char('code' , 6)->unique();
-            // $table->integer('level');
+            $table->integer('level');
             $table->string('image')->nullable();
             $table->foreignId('category_id');
             $table->timestamps();

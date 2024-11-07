@@ -1,17 +1,24 @@
 
 @extends('courses.master')
-@section('title','Add New Category | '.env('APP_NAME'))
+@section('title','Add New Course | '.env('APP_NAME'))
 @section('content')
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-4 text-gray-800">Add New Course</h1>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="h3 mb-4 text-gray-800">Add New Course</h1>
+            <a href="{{route('courses.index')}}" class="btn btn-dark px-5"  style="display: inline-block; margin-left: auto" ><i class="fas fa-arrow-left"></i> ALL Posts</a>
+        </div>
 
         <form action="{{route('courses.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
 
             @include('courses.form')
+
+            <div class="col-12 mt-3">
+                <button class="btn btn-primary" type="submit">Add Course </button>
+            </div>
 
         </form>
 

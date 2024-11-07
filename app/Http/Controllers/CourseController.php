@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\CourseCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class CourseController extends Controller
 {
@@ -12,7 +14,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::latest('id');
+        $courses = Course::orderBy('id', 'DESC')->get(); // Collection object
+        // dd($courses);
         return view('courses.index', compact('courses'));
     }
 
@@ -22,7 +25,9 @@ class CourseController extends Controller
     public function create()
     {
         $course = new Course();
-        return view('courses.create',compact('course'));
+        $categories = CourseCategory::all();
+        // dd($categories);
+        return view('courses.create',compact('course','categories'));
     }
 
     /**
@@ -36,6 +41,8 @@ class CourseController extends Controller
             'course_title_en'=>'required',
             'en_desc'=>'required',
             'ar_desc'=>'required',
+            'level'=>'required',
+            'type'=>'required',
             'image'=>'required|image|mimes:png,jpg',
         ]);
 
@@ -52,7 +59,8 @@ class CourseController extends Controller
             'title_en'=> $request->course_title_en ,
             'description_en'=> $request->en_desc ,
             'description_ar'=> $request->ar_desc ,
-            'category_id' => '1',
+            'level'=> $request->level ,
+            'category_id' => $request->type,
             'image'=>$img_name,
         ]);
 
@@ -74,7 +82,9 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        // $course = Course::findOrFail($id);
+        $categories = CourseCategory::all();
+        return view('courses.edit' , compact('course','categories'));
     }
 
     /**
@@ -82,7 +92,44 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+
+        //validare
+        $request->validate([
+            'course_title_ar'=>'required',
+            'course_title_en'=>'required',
+            'en_desc'=>'required',
+            'ar_desc'=>'required',
+            'level'=>'required',
+            'type'=>'required',
+            'image'=>'nullable|image|mimes:png,jpg',
+        ]);
+
+        //uploads file
+            $img_name = $course->image;
+            if($request->hasFile('image')){
+        // dd('done');
+          //delet old image
+          File::delete(public_path('uploads/courses/'.$img_name));
+          $img_name = rand().time().$request->file('image')->getClientOriginalName();
+          $request->file('image')->move(public_path('uploads/courses/'),$img_name);
+      }
+
+        //Add Data to Databas
+        $course->update([
+            'title_ar'=> $request->course_title_ar ,
+            'title_en'=> $request->course_title_en ,
+            'description_en'=> $request->en_desc ,
+            'description_ar'=> $request->ar_desc ,
+            'level'=> $request->level ,
+            'category_id' => $request->type,
+            'image'=>$img_name,
+        ]);
+
+
+        //redirect
+
+
+        return redirect()->route('courses.index')->with('msg','Course Updated Successfully')->with('type','info');
     }
 
     /**
@@ -90,6 +137,9 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        File::delete(public_path('uploads/courses/'.$course->image));
+        Course::destroy($course->id);
+
+        return redirect()->route('courses.index')->with('msg','Course deleted Successfully')->with('type','danger');
     }
 }

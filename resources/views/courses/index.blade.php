@@ -104,78 +104,39 @@
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h1>Courses</h1>
-                    <a href="{{route('courses.create')}}" class="btn btn-primary px-5" >Add New Course</a>
+                    <a href="{{route('courses.create')}}" class="btn btn-primary px-5"  style="display: inline-block; margin-left: auto" >Add New Course</a>
                 </div>
 
-                @if (session('msg'))
-                    <div class="alert alert-{{session('type')}}"><h5>{{session('msg')}}</h5></div>
-                @endif
-                    <div class="card m-3" style="width: 18rem;">
-                        <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Some quick example text</h5>
-                          <p class="card-text">Some quick text to build.</p>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between">
-                            <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                            <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                          </div>
+                    @if (session('msg'))
+                    <div class="alert alert-{{session('type')}} alert-dismissible fade show  d-flex justify-content-between align-items-center " role="alert">
+                        <h5>{{session('msg')}}</h5>
+                        <button type="button" data-bs-dismiss="alert" aria-label="Close"  class=" btn btn-close"></button>
                     </div>
-                    <div class="card m-3" style="width: 18rem;">
-                        <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Some quick example text</h5>
-                          <p class="card-text">Some quick text to build.</p>
+                    @endif
+
+                    @forelse ($courses as $course )
+                    @php
+                        $title = 'title_'.app()->currentLocale() ;
+                        $description = 'description_'.app()->currentLocale() ;
+                    @endphp
+                        <div class="card m-3" style="width: 18rem;">
+                            <img src="{{asset('uploads/courses/'.$course->image)}}" height="120px"  class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{$course->$title}}</h5>
+                            <p class="card-text">{{Str::words($course->$description, 6 ,'.....')}}</p>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between">
+                                <form class="d-inline" action="{{route('courses.destroy' , $course->id)}}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></button>
+                                </form>
+                                <a href="{{route('courses.edit',$course->id)}}" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
+                            </div>
                         </div>
-                        <div class="card-footer d-flex justify-content-between">
-                            <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                            <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                          </div>
-                    </div>
-                    <div class="card m-3" style="width: 18rem;">
-                        <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Some quick example text</h5>
-                          <p class="card-text">Some quick text to build.</p>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between">
-                            <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                            <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                          </div>
-                    </div>
-                    <div class="card m-3" style="width: 18rem;">
-                        <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Some quick example text</h5>
-                          <p class="card-text">Some quick text to build.</p>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between">
-                            <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                            <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                          </div>
-                    </div>
-                    <div class="card m-3" style="width: 18rem;">
-                        <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Some quick example text</h5>
-                          <p class="card-text">Some quick text to build.</p>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between">
-                            <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                            <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                          </div>
-                    </div>
-                    <div class="card m-3" style="width: 18rem;">
-                        <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Some quick example text</h5>
-                          <p class="card-text">Some quick text to build.</p>
-                        </div>
-                        <div class="card-footer d-flex justify-content-between">
-                            <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                            <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                          </div>
-                    </div>
+                    @empty
+                    <div class="alert alert-info"><h3>No Data Found....</h3></div>
+                    @endforelse
 
                     <div class="d-grid gap-2 col-4 mx-auto mt-5">
                         <button class="btn btn-secondary mb-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"  aria-expanded="false" aria-controls="collapseExample">View All Courses</button>
@@ -250,95 +211,6 @@
                         </div>
                         <div class="card m-3" style="width: 18rem;">
                             <img src="{{asset('assets/img/coures 9.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Some quick example text</h5>
-                              <p class="card-text">Some quick text to build.</p>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between">
-                                <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                                <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                              </div>
-                        </div>
-                        <div class="card m-3" style="width: 18rem;">
-                            <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Some quick example text</h5>
-                              <p class="card-text">Some quick text to build.</p>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between">
-                                <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                                <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                              </div>
-                        </div>
-                        <div class="card m-3" style="width: 18rem;">
-                            <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Some quick example text</h5>
-                              <p class="card-text">Some quick text to build.</p>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between">
-                                <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                                <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                              </div>
-                        </div>
-                        <div class="card m-3" style="width: 18rem;">
-                            <img src="{{asset('assets/img/coures 9.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Some quick example text</h5>
-                              <p class="card-text">Some quick text to build.</p>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between">
-                                <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                                <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                              </div>
-                        </div>
-
-                        <div class="card m-3" style="width: 18rem;">
-                            <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Some quick example text</h5>
-                              <p class="card-text">Some quick text to build.</p>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between">
-                                <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                                <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                              </div>
-                        </div>
-                        <div class="card m-3" style="width: 18rem;">
-                            <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Some quick example text</h5>
-                              <p class="card-text">Some quick text to build.</p>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between">
-                                <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                                <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                              </div>
-                        </div>
-                        <div class="card m-3" style="width: 18rem;">
-                            <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Some quick example text</h5>
-                              <p class="card-text">Some quick text to build.</p>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between">
-                                <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                                <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                              </div>
-                        </div>
-                        <div class="card m-3" style="width: 18rem;">
-                            <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Some quick example text</h5>
-                              <p class="card-text">Some quick text to build.</p>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between">
-                                <a href="" class="btn btn-danger btn-sm mx-1"> <i class="fas fa-trash"></i></a>
-                                <a href="" class="btn btn-primary btn-sm  mx-1"> <i class="fas fa-edit"></i></a>
-                              </div>
-                        </div>
-                        <div class="card m-3" style="width: 18rem;">
-                            <img src="{{asset('assets/img/coures 1.jpg')}}" height="120px"  class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">Some quick example text</h5>
                               <p class="card-text">Some quick text to build.</p>
